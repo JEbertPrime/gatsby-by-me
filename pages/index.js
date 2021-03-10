@@ -1,14 +1,18 @@
 import Head from 'next/head'
 import fs from 'fs'
+import {useState} from 'react'
 import styles from '../styles/Home.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {Input, Button, FormGroup, Form, Container as container, Col as col, Row as row} from 'reactstrap'
 import styled from 'styled-components'
 const Col = styled(col)`
 margin:auto;
+margin-top:10px;
 background: rgba(0,0,0,.5);
 border-radius: 10px;
 padding:10px;
+box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
 `
 const Row = styled(row)`
 `
@@ -45,10 +49,20 @@ export async function getStaticProps(context) {
   }
 }
 export default function Home({book, background}) {
-    
+    const [downloadButton, changeDownloadButton] = useState(<div/>)
  const createBook = event => {
-    event.preventDefault() // don't redirect the page
-    // where we'll add our form logic
+    event.preventDefault() 
+    var newBook = book.text.replaceAll(event.target.replace1.value, event.target.replace2.value)
+    newBook = newBook.replaceAll('F. Scott Fitzgerald', event.target.name.value)
+    console.log('book written')
+    var url = window.URL.createObjectURL(new Blob([newBook]))
+    var link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', 'YourBook.txt')
+    document.body.appendChild(link)
+    link.click()
+    console.log('link clicked')
+    link.parentNode.removeChild(link)
   }
 
   return (
@@ -58,8 +72,8 @@ export default function Home({book, background}) {
         <h1>Gatsby by Me</h1>
         <p>Ever wish your work could be counted among the greatest of the 20th century? Ever want to create a novel that captures the soul of scarred nation?</p>
         <p>Well, thanks to the magic of the <strong>public domain</strong>, now you can!</p>
-        <p>A public domain work isn't owned by anybody; but if you make an alteration to it, you can own the copyright on that alteration! Just type in your name and the words you want to replace, and this app will give you your new book and the legally
-         binding license to it.</p>
+        <p>A public domain work isn't owned by anybody; but if you make an alteration to it, you can own the copyright on that alteration! Just type in your name and the words you want to replace, and this app will give you your new book - which you own <strong>all</strong> the rights to.</p>
+         <p></p>
           <Form onSubmit={createBook}>
             <FormGroup>
               <Input id="name" type="text" autoComplete="name" required placeholder='Name' />
@@ -73,6 +87,9 @@ export default function Home({book, background}) {
               
           <Button type="submit" color="primary">Write my Novel!</Button>
       </Form>
+      <div>
+        {downloadButton}
+      </div>
       </Col>
     </Row>
       
