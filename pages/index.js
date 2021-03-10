@@ -3,7 +3,7 @@ import fs from 'fs'
 import {useState} from 'react'
 import styles from '../styles/Home.module.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import {Input, Button, FormGroup, Form, Container as container, Col as col, Row as row} from 'reactstrap'
+import {Input, Button, FormGroup, Form, Container , Col as col, Row as row} from 'reactstrap'
 import styled from 'styled-components'
 const Col = styled(col)`
 margin:auto;
@@ -16,8 +16,10 @@ box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 `
 const Row = styled(row)`
 `
-const Container = styled(container)`
-height:100vh;
+const Fill = styled.div`
+  width: 100%;
+  height:100vh;
+  position:fixed;
   ${({background}) => handleBackground(background)}
 `;
 const handleBackground = (i) =>{
@@ -66,6 +68,8 @@ export default function Home({book, background}) {
   }
 
   return (
+    <div>
+    <Fill />
     <Container fluid background={background}>
     <Row>
       <Col md={6}>
@@ -94,6 +98,6 @@ export default function Home({book, background}) {
     </Row>
       
     </Container>
-    
+    </div>
   )
 }
